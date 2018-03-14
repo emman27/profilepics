@@ -2,11 +2,11 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/emman27/profilepics/imaging"
-	"github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -18,7 +18,7 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 	err := s.ListenAndServe()
-	logrus.Error(err)
+	log.Fatal(err)
 }
 
 type myHandler struct{}
@@ -32,7 +32,6 @@ func (h myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	name := r.FormValue("name")
-	logrus.Info(name)
 	w.Header().Set("Content-Type", "image/svg+xml")
-	imaging.Generate(name, w)
+	w.Write([]byte(imaging.Generate(name)))
 }

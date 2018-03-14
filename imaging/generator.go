@@ -3,11 +3,9 @@ package imaging
 
 import (
 	"fmt"
-	"io"
+	"math"
 	"math/rand"
 	"strings"
-
-	svg "github.com/ajstarks/svgo"
 )
 
 const (
@@ -16,19 +14,21 @@ const (
 )
 
 // Generate generates a svg based on a name. See telegram for example pictures
-func Generate(name string, w io.Writer) *svg.SVG {
-	canvas := svg.New(w)
+func Generate(name string) string {
 	r := rand.Intn(155)
 	g := rand.Intn(155)
 	b := rand.Intn(155)
-	color := canvas.RGB(r, g, b)
-	lighterColor := canvas.RGB(r+100, g+100, b+100)
-	canvas.Start(width, height)
-	canvas.Circle(width/2, height/2, 500, color)
-	canvas.Circle(width/2, height/2, 480, lighterColor)
-	canvas.Text(width/2, height/2, initials(name), fmt.Sprintf("text-anchor:middle;font-size:250px;alignment-baseline:middle;font-family:Arial,Helvetica;%s", color))
-	canvas.End()
-	return canvas
+	text := initials(name)
+	fontSize := int(500 / math.Pow(float64(len(text)), 0.7))
+
+	data := fmt.Sprintf(`<?xml version="1.0"?>
+<svg width="1000" height="1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<circle cx="500" cy="500" r="500" style="fill:rgb(%d,%d,%d)" />
+	<circle cx="500" cy="500" r="480" style="fill:rgb(%d,%d,%d)" />
+	<text x="500" y="500" style="text-anchor:middle;font-size:%dpx;alignment-baseline:middle;font-family:Arial,Helvetica;fill:rgb(%d,%d,%d)">%s</text>
+</svg>
+`, r, g, b, r+100, g+100, b+100, fontSize, r, g, b, text)
+	return data
 }
 
 func initials(name string) string {

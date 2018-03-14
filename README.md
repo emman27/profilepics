@@ -10,5 +10,5 @@ go run main.go
 ```
 
 ### Credits
-Much credits go to [ajstarks' svgo](https://github.com/ajstarks/svgo).
+Much credits go to [ajstarks' svgo](https://github.com/ajstarks/svgo), for the initial implementation (now removed)
 
