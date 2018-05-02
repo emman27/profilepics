@@ -4,7 +4,6 @@ package imaging
 import (
 	"fmt"
 	"math"
-	"math/rand"
 	"strings"
 )
 
@@ -15,9 +14,19 @@ const (
 
 // Generate generates a svg based on a name. See telegram for example pictures
 func Generate(name string) string {
-	r := rand.Intn(155)
-	g := rand.Intn(155)
-	b := rand.Intn(155)
+	name = strings.ToLower(name)
+	var (
+		r, g, b int
+	)
+	if len(name) > 0 {
+		r = (int(name[0]) - 97) * 155 / 26
+	}
+	if len(name) > 1 {
+		g = (int(name[1]) - 97) * 155 / 26
+	}
+	if len(name) > 2 {
+		b = (int(name[2]) - 97) * 155 / 26
+	}
 	text := initials(name)
 	fontSize := int(500 / math.Pow(float64(len(text)), 0.7))
 
