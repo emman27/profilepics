@@ -7,11 +7,6 @@ import (
 	"strings"
 )
 
-const (
-	height = 1000
-	width  = 1000
-)
-
 // Generate generates a svg based on a name. See telegram for example pictures
 func Generate(name string) string {
 	name = strings.ToLower(name)
